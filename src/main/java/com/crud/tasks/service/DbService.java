@@ -31,10 +31,8 @@ public class DbService {
         repository.deleteById(id);
     }
 
-    public void updateTask(final Task task) throws TaskNotFoundException {
+    public Integer updateTask(final Task task) throws TaskNotFoundException {
         Integer result = repository.updateTask(task.getTitle(), task.getContent(), task.getId());
-        if (result == 0) {
-            throw new TaskNotFoundException(task.getId());
-        }
+        return result;
     }
 }
