@@ -26,7 +26,7 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getTask")
     public TaskDto getTask(@RequestParam Long taskId) throws TaskNotFoundException {
-        return taskMapper.mapToTaskDto(dbService.findTaskById(taskId).orElseThrow(() -> new TaskNotFoundException("Task of ID: \"" + taskId + "\" not found")));
+        return taskMapper.mapToTaskDto(dbService.findTaskById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId)));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
@@ -35,8 +35,8 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateTask", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TaskDto updateTask(@RequestBody TaskDto task) {
-        return taskMapper.mapToTaskDto(dbService.saveTask(taskMapper.mapToTask(task)));
+    public void updateTask(@RequestBody TaskDto task) throws TaskNotFoundException {
+        dbService.updateTask(taskMapper.mapToTask(task));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createTask", consumes = MediaType.APPLICATION_JSON_VALUE)
