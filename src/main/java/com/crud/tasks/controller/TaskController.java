@@ -4,11 +4,8 @@ import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,15 +25,8 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getTask")
-    public ResponseEntity getTask(String taskId) {
-        TaskDto searchedTask;
-        try {
-            searchedTask = taskMapper.mapToTaskDto(dbService.findTaskById(taskId));
-            return ResponseEntity.status(HttpStatus.OK).body(searchedTask);
-        } catch (NumberFormatException e) {
-            System.out.println("Bad ID. Cannot parse Id string to long.");
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Bad ID. Cannot parse Id: \"" + taskId + "\" to long.");
-        }
+    public TaskDto getTask(@RequestParam Long taskId) throws TaskNotFoundException {
+        return taskMapper.mapToTaskDto(dbService.findTaskById(taskId).orElseThrow(() -> new TaskNotFoundException("Task of ID: \"" + taskId + "\" not found")));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
@@ -49,8 +39,8 @@ public class TaskController {
         return new TaskDto((long) 1, "Edited test title", "Test content");
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createTask")
-    public void createTask(TaskDto task) {
-
+    @RequestMapping(method = RequestMethod.POST, value = "createTask", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createTask(@RequestBody TaskDto taskDto) {
+        dbService.saveTask(taskMapper.mapToTask(taskDto));
     }
 }
