@@ -1,25 +1,43 @@
 package com.crud.tasks.controller;
 
 import com.crud.tasks.domain.TaskDto;
+import com.crud.tasks.mapper.TaskMapper;
+import com.crud.tasks.service.DbService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("v1/task")
 public class TaskController {
 
+    @Autowired
+    private DbService dbService;
+    @Autowired
+    private TaskMapper taskMapper;
+
     @RequestMapping(method = RequestMethod.GET, value = "getTasks")
     public List<TaskDto> getTasks() {
-        return new ArrayList<>();
+
+        return taskMapper.mapToTaskDtoList(dbService.findAllTasks());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getTask")
-    public TaskDto getTask(String taskId) {
-        return new TaskDto((long) 1, "test title", "test_content");
+    public ResponseEntity getTask(String taskId) {
+        TaskDto searchedTask;
+        try {
+            searchedTask = taskMapper.mapToTaskDto(dbService.findTaskById(taskId));
+            System.out.println();
+            return ResponseEntity.status(HttpStatus.OK).body(searchedTask);
+        } catch (NumberFormatException e) {
+            System.out.println("Bad ID. Cannot parse Id string to long.");
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Bad ID. Cannot parse Id: \"" + taskId + "\" to long.");
+        }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
