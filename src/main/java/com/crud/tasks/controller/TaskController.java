@@ -32,7 +32,6 @@ public class TaskController {
         TaskDto searchedTask;
         try {
             searchedTask = taskMapper.mapToTaskDto(dbService.findTaskById(taskId));
-            System.out.println();
             return ResponseEntity.status(HttpStatus.OK).body(searchedTask);
         } catch (NumberFormatException e) {
             System.out.println("Bad ID. Cannot parse Id string to long.");
