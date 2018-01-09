@@ -30,8 +30,8 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
-    public void deleteTask(String taskId) {
-
+    public void deleteTask(@RequestParam Long taskId) {
+        dbService.deletTaskById(taskId);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateTask", consumes = MediaType.APPLICATION_JSON_VALUE)
