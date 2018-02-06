@@ -6,6 +6,7 @@ import com.crud.tasks.domain.created.CreatedTrelloCard;
 import com.crud.tasks.trello.config.TrelloConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -25,6 +26,7 @@ public class TrelloClient {
     private RestTemplate restTemplate;
     private TrelloConfig trelloConfig;
 
+    @Autowired
     public TrelloClient(RestTemplate restTemplate, TrelloConfig trelloConfig) {
         this.restTemplate = restTemplate;
         this.trelloConfig = trelloConfig;
