@@ -25,4 +25,7 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
     @Modifying
     @Transactional
     Integer updateTask(@Param("NAME") String name, @Param("DESCRIPTION") String description, @Param("ID") Long id);
+
+    @Override
+    long count();
 }
