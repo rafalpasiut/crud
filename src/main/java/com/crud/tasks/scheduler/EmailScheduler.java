@@ -27,10 +27,10 @@ public class EmailScheduler {
     @Scheduled(cron = "0 0 10 * * *")
     public void sendInformationEmail() {
         long count = taskRepository.count();
-        simpleEmailService.send(new Mail(adminConfig.getAdminMail(), SUBJECT, emailMessageCreator(count), ""));
+        simpleEmailService.send(new Mail(adminConfig.getAdminMail(), SUBJECT, createEmailMessage(count), ""));
     }
 
-    private String emailMessageCreator(long count) {
+    private String createEmailMessage(long count) {
         if (count == 0) {
             return "Currently you don`t have any tasks in your database.";
         } else if (count == 1) {
