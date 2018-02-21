@@ -36,11 +36,8 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateTask", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateTask(@RequestBody TaskDto task) throws TaskNotFoundException {
+    public void updateTask(@RequestBody TaskDto task) {
         Integer result = dbService.updateTask(taskMapper.mapToTask(task));
-        if (result == 0) {
-            throw new TaskNotFoundException(task.getId());
-        }
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createTask", consumes = MediaType.APPLICATION_JSON_VALUE)

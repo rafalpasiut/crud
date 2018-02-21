@@ -1,6 +1,5 @@
 package com.crud.tasks.service;
 
-import com.crud.tasks.controller.TaskNotFoundException;
 import com.crud.tasks.domain.Task;
 import com.crud.tasks.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +27,12 @@ public class DbService {
     }
 
     public void deletTaskById(final Long id) {
-        repository.deleteById(id);
+        if (id != null) {
+            repository.deleteById(id);
+        }
     }
 
-    public Integer updateTask(final Task task) throws TaskNotFoundException {
+    public Integer updateTask(final Task task) {
         Integer result = repository.updateTask(task.getTitle(), task.getContent(), task.getId());
         return result;
     }
