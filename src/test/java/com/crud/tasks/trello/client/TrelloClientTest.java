@@ -4,7 +4,7 @@ import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.domain.created.AttachmentsByType;
 import com.crud.tasks.domain.created.Badges;
-import com.crud.tasks.domain.created.CreatedTrelloCard;
+import com.crud.tasks.domain.created.CreatedTrelloCardDto;
 import com.crud.tasks.domain.created.Trello;
 import com.crud.tasks.trello.config.TrelloConfig;
 import org.junit.Assert;
@@ -70,16 +70,16 @@ public class TrelloClientTest {
 
         URI uri = new URI("http://test.com/cards?key=test&token=test&name=Test%20task&desc=Test%20description&pos=top&idList=test_id");
 
-        CreatedTrelloCard createdTrelloCard = new CreatedTrelloCard("1", "Test task", "http://test.com", new Badges(1, new AttachmentsByType(new Trello(1, 1))));
-        when(restTemplate.postForObject(uri, null, CreatedTrelloCard.class)).thenReturn(createdTrelloCard);
+        CreatedTrelloCardDto createdTrelloCardDto = new CreatedTrelloCardDto("1", "Test task", "http://test.com", new Badges(1, new AttachmentsByType(new Trello(1, 1))));
+        when(restTemplate.postForObject(uri, null, CreatedTrelloCardDto.class)).thenReturn(createdTrelloCardDto);
 
         //When
-        CreatedTrelloCard newCard = trelloClient.createNewCard(trelloCardDto);
+        CreatedTrelloCardDto newCard = trelloClient.createNewCard(trelloCardDto);
 
         //Then
-        Assert.assertEquals(createdTrelloCard.getId(), newCard.getId());
-        Assert.assertEquals(createdTrelloCard.getName(), newCard.getName());
-        Assert.assertEquals(createdTrelloCard.getShortUrl(), newCard.getShortUrl());
+        Assert.assertEquals(createdTrelloCardDto.getId(), newCard.getId());
+        Assert.assertEquals(createdTrelloCardDto.getName(), newCard.getName());
+        Assert.assertEquals(createdTrelloCardDto.getShortUrl(), newCard.getShortUrl());
     }
 
     @Test
