@@ -21,7 +21,6 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getTasks")
     public List<TaskDto> getTasks() {
-
         return taskMapper.mapToTaskDtoList(dbService.findAllTasks());
     }
 
@@ -37,7 +36,7 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateTask", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateTask(@RequestBody TaskDto task) {
-        Integer result = dbService.updateTask(taskMapper.mapToTask(task));
+        dbService.updateTask(taskMapper.mapToTask(task));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createTask", consumes = MediaType.APPLICATION_JSON_VALUE)
