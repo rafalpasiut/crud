@@ -96,14 +96,14 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void deleteTask() throws Exception {
+    public void shouldDeleteTask() throws Exception {
         //Given & When & Then
         mockMvc.perform(delete("/v1/task/deleteTask").param("taskId", "1"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void updateTask() throws Exception {
+    public void shouldUpdateTask() throws Exception {
         //Given
         TaskDto taskDto = new TaskDto(1L, "title", "content");
         Gson gson = new Gson();
@@ -116,7 +116,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void createTask() throws Exception {
+    public void shouldCreateTask() throws Exception {
         //Given
         TaskDto taskDto = new TaskDto(1L, "title", "content");
         Gson gson = new Gson();
