@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My welcome page</title>
+</head>
+<body>
+<h1>First impression of my page</h1>
+<br>
+My Thymeleaf variable
+<br>
+<!--/*@thymesVar id="number" type="com.crud.tasks.controller.StaticWebPageController"*/-->
+<span th:text="${number + ' * ' + number + ' = '} + ${number * number}"></span>
+<br>
+<span th:text="${number + ' * ' + number + ' + ' + number + ' = '} + ${number * number + number}"></span>
+<br>
+<span th:text="${number + ' - ' + number + ' * ' + number + ' = '} + ${number - number * number}"></span>
+</body>
+</html>
