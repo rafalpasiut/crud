@@ -7,7 +7,7 @@ import com.crud.tasks.domain.created.AttachmentsByType;
 import com.crud.tasks.domain.created.Badges;
 import com.crud.tasks.domain.created.CreatedTrelloCardDto;
 import com.crud.tasks.domain.created.Trello;
-import com.crud.tasks.service.SimpleEmailService;
+import com.crud.tasks.service.mail.SimpleEmailService;
 import com.crud.tasks.service.TrelloService;
 import com.crud.tasks.trello.client.TrelloClient;
 import org.junit.Assert;
@@ -20,7 +20,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)

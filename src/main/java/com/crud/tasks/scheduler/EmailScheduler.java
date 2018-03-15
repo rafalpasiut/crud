@@ -2,11 +2,17 @@ package com.crud.tasks.scheduler;
 
 import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.Mail;
+import com.crud.tasks.domain.Task;
 import com.crud.tasks.repository.TaskRepository;
-import com.crud.tasks.service.SimpleEmailService;
+import com.crud.tasks.service.mail.MailType;
+import com.crud.tasks.service.mail.SimpleEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class EmailScheduler {
@@ -24,19 +30,17 @@ public class EmailScheduler {
         this.adminConfig = adminConfig;
     }
 
-    @Scheduled(cron = "0 0 10 * * *")
+    //@Scheduled(cron = "0 0 10 * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void sendInformationEmail() {
-        long count = taskRepository.count();
-        simpleEmailService.send(new Mail(adminConfig.getAdminMail(), SUBJECT, createEmailMessage(count), ""));
+        List<Task> tasks = taskRepository.findAll();
+        simpleEmailService.send(new Mail(adminConfig.getAdminMail(), SUBJECT, "", ""), MailType.DATABASE_TASK_DAILY_COUNT, obtainParameters(tasks));
     }
 
-    private String createEmailMessage(long count) {
-        if (count == 0) {
-            return "Currently you don`t have any tasks in your database.";
-        } else if (count == 1) {
-            return "Currently in database you`ve got: 1 task.";
-        } else {
-            return "Currently in database you`ve got: " + count + " tasks.";
-        }
+    private Map<String, Object> obtainParameters(List<Task> tasks) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("tasks", tasks);
+        params.put("count", tasks.size());
+        return params;
     }
 }

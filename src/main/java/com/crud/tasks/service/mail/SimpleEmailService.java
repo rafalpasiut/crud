@@ -1,4 +1,4 @@
-package com.crud.tasks.service;
+package com.crud.tasks.service.mail;
 
 import com.crud.tasks.domain.Mail;
 import org.slf4j.Logger;
@@ -11,6 +11,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class SimpleEmailService {
 
@@ -21,22 +23,23 @@ public class SimpleEmailService {
     @Autowired
     private MailCreatorService mailCreatorService;
 
-    public void send(final Mail mail) {
+    public void send(final Mail mail, final MailType mailType, final Map<String, Object> params) {
         LOGGER.info("Start email preparation...");
         try {
-            javaMailSender.send(createMimeMessage(mail));
+            javaMailSender.send(createMimeMessage(mail, mailType, params));
             LOGGER.info("Email has been sent");
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending", e.getMessage(), e);
         }
     }
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail) {
+    private MimeMessagePreparator createMimeMessage(final Mail mail, final MailType mailType, final Map<String, Object> params) {
+
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getReceiveEmail());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            messageHelper.setText(mailCreatorService.buildMail(mail.getMessage(), mailType, params), true);
         };
     }
 

@@ -97,7 +97,9 @@
                                     <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
                                         <p th:if="${is_friend}" style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Hi, <span th:text="${admin_config.getAdminName()}"></span></p>
                                         <p th:unless="${is_friend}" style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Dear, <span th:text="${admin_config.getAdminName()}"></span></p>
-                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;" th:text="${message}"></p>
+                                        <p th:if="${count==0}" style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Currently you don`t have any tasks in your database.</p>
+                                        <p th:if="${count==1}" style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">"Currently in database you`ve got: 1 task."</p>
+                                        <p th:if="${count>1}" style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;" th:text="${'Currently in database you`ve got: ' + count + ' tasks.'}"></p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
                                             <tbody>
                                             <tr>
@@ -113,11 +115,11 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                            Application functionality:
+                                        <p th:if="${count!=0}" style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
+                                            Tasks List:
                                         </p>
-                                        <ul th:each="function : ${application_functionality}">
-                                            <li th:text="${function}"></li>
+                                        <ul th:each="task : ${tasks}">
+                                            <li th:text="${task.getTitle()}"></li>
                                         </ul>
                                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Have a great day <span th:text="${admin_config.getAdminName()}"></span> </p>
                                     </td>
