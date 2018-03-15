@@ -30,8 +30,7 @@ public class EmailScheduler {
         this.adminConfig = adminConfig;
     }
 
-    //@Scheduled(cron = "0 0 10 * * *")
-    @Scheduled(cron = "30 * * * * *")
+    @Scheduled(cron = "0 0 10 * * *")
     public void sendInformationEmail() {
         List<Task> tasks = taskRepository.findAll();
         simpleEmailService.send(new Mail(adminConfig.getAdminMail(), SUBJECT, "", ""), MailType.DATABASE_TASK_DAILY_COUNT, obtainParameters(tasks));
